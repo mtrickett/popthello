@@ -1,5 +1,21 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-{{welcome-page}}
-{{!-- Feel free to remove this! --}}
-
-{{outlet}}
+<div class="container">
+  <nav class="menu">
+        {{#link-to "index"}}
+            <div id="popthello-logo"></div>
+        {{/link-to}}
+    <div class="links">
+        {{#link-to "how-to" class="menu-item"}}
+            How-to
+        {{/link-to}}
+        {{#link-to "about" class="menu-item"}}
+            About
+        {{/link-to}}
+        {{#link-to "game" class="menu-item play-now"}}
+            Play Now
+        {{/link-to}}
+    </div>
+  </nav>
+  <div class="body">
+    {{outlet}}
+  </div>
+</div>

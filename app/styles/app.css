@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900");
+html body {
+  margin: 0px;
+  font-family: "Lato", Arial, sans-serif;
+}
+html body h1 {
+  color: #c01616;
+}
+html body nav {
+  background: #c01616;
+  height: 60px;
+  box-shadow: 0px 0px 8px 2px #b5b5b5;
+  background-image: url(./img/popthello.png);
+  background-size: 170px;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 10px;
+}
+html body nav #popthello-logo {
+  height: 60px;
+  width: 200px;
+  display: inline-block;
+}
+html body nav .links {
+  float: right;
+  margin-top: 18px;
+  margin-right: 20px;
+  font-size: 18px;
+}
+html body nav .links .menu-item {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+}
+html body nav .links .menu-item:hover {
+  color: #c3c3c3;
+}
+html body nav .links .menu-item.play-now {
+  color: #c01616;
+  background: #fff;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 4px;
+  border: 1px solid #FFF;
+  transition: all 0.2s linear;
+}
+html body nav .links .menu-item.play-now:hover {
+  color: #fff;
+  background: #c01616;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+html body .page {
+  margin: 50px 0px;
+}
+html body .board {
+  margin: 0 auto;
+}
+html body .board .cell {
+  border: 1px solid black;
+  height: 50px;
+  width: 50px;
+}
+html body .board .piece {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+}
+html body .board .piece.hearts {
+  background-color: red;
+}
+html body .board .piece.cards {
+  background-color: blue;
+}
+html body #currentPlayer.hearts {
+  color: red;
+}
+html body #currentPlayer.cards {
+  color: blue;
+}
+
+/*# sourceMappingURL=app.css.map */
