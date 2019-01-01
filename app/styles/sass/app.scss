@@ -9,11 +9,13 @@ html {
             color: #c01616;
         }
 
+        /* NAVIGATION */
+
         nav {
             background: #c01616;
             height: 60px;
             box-shadow: 0px 0px 8px 2px #b5b5b5;
-            background-image: url(./img/popthello.png);
+            background-image: url('./img/popthello.png');
             background-size: 170px;
             background-repeat: no-repeat;
             background-position-y: center;
@@ -27,17 +29,19 @@ html {
 
             .links {
                 float: right;
-                margin-top: 18px;
-                margin-right: 20px;
-                font-size: 18px;
+                margin: 20px;
+                font-size: 16px;
+                font-weight: 700;
 
                 .menu-item {
                     text-decoration: none;
                     color: #fff;
                     padding: 10px;
+                    transition: all .2s linear;
 
                     &:hover {
-                        color: #c3c3c3;
+                        color: #e2e2e2;
+                        transition: all .2s linear;
                     }
 
                     &.play-now {
@@ -61,17 +65,47 @@ html {
         }
 
         .page {
-            margin: 50px 0px;
+            margin: 30px;
         }
 
-
+        /* GAME */
 
         .board {
-                margin: 0 auto;
+            margin: 0 auto;
+            width: 440px;
+            overflow: hidden;
+
+            .button {
+                &.start {
+                    cursor: pointer;
+                    position: absolute;
+                    width: 152px;
+                    top: 269px;
+                    left: 50%;
+                    margin-left: -100px;
+                    background: #c01616;
+                    padding: 10px;
+                    border-radius: 4px;
+                    color: #fff;
+                    font-weight: 700;
+                    font-size: 30px;
+                    border: 3px solid #c01616;
+                    transition: all .2s linear;
+
+                    &:hover {
+                        color: #c01616;
+                        background: #FFF;
+                        transition: all .2s linear;
+                    }
+                }
+            }
+
             .cell {
-                border: 1px solid black;
+                background: #e3e3e3;
                 height: 50px;
                 width: 50px;
+                display: inline-block;
+                border-radius: 4px;
             }
 
             .piece {
@@ -81,23 +115,235 @@ html {
                 margin: 5px;
 
                 &.hearts {
-                    background-color: red;
+                    background-image: url('./img/heart-piece.png');
+                    background-size: cover;
                 }
 
                 &.cards {
-                    background-color: blue;
+                    background-image: url('./img/cards-piece.png');
+                    background-size: cover;
                 }
             }
         }
 
-        #currentPlayer {
+        .scoreboard {
+            width: 440px;
+            margin: 0 auto;
+
             &.hearts {
-                color: red;
+                & > .player.hearts {
+                    border: 6px solid #c01616;
+                    transition: all .2s linear;
+                }
             }
 
             &.cards {
-                color: blue;
+                & > .player.cards {
+                    border: 6px solid #c01616;
+                    transition: all .2s linear;
+                }
             }
+
+            .player {
+                border-radius: 35px;
+                background: #e2e2e2;
+                height: 50px;
+                width: 194px;
+                display: inline-block;
+                text-align: center;
+                margin: 20px 3px;
+                border: 6px solid #e2e2e2;
+                transition: all .2s linear;
+
+                .icon {
+                    border-radius: 50%;
+                    height: 40px;
+                    width: 40px;
+                    margin: 5px;
+                    display: inline-block;
+                    float: left;
+
+                    &.hearts {
+                        background-image: url('./img/heart-piece.png');
+                        background-size: cover;
+                    }
+
+                    &.cards {
+                        background-image: url('./img/cards-piece.png');
+                        background-size: cover;
+                    }
+                }
+
+                .name {
+                    color: #000;
+                    font-size: 18px;
+                    position: absolute;
+                    margin-left: 49px;
+                    line-height: 2.8;
+                }
+
+                .score {
+                    color: #1d1d1d;
+                    font-size: 30px;
+                    font-weight: 900;
+                    float: right;
+                    padding: 7px 12px 0 0;
+                }
+            }
+
+            .reset {
+                text-align: center;
+                cursor: pointer;
+                font-size: 16px;
+                font-weight: 700;
+                color: #e2e2e2;
+                transition: all .2s linear;
+
+                &:hover {
+                    color: #c01616;
+                    transition: all .2s linear;
+                }
+            }
+        }
+
+        /* HOW-TO */
+        .how-to {
+            width: 80%;
+            text-align: left;
+            margin: 0 auto;
+        }
+
+        /* ABOUT */
+
+
+        /* WINNING GAME ANIMATION */
+
+        @-webkit-keyframes peices-shake {
+            0%,
+            100% {
+                -webkit-transform: translateX(0);
+                transform: translateX(0);
+            }
+            50% {
+                -webkit-transform: translateX(80px);
+                transform: translateX(80px);
+            }
+        }
+
+        @keyframes peices-fall {
+            0% {
+                top: -10%;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+
+        @keyframes peices-shake {
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(80px);
+            }
+        }
+
+        .pieces {
+            position: fixed;
+            top: -10%;
+            z-index: 9999;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            cursor: default;
+            -webkit-animation-name: peices-fall, peices-shake;
+            -webkit-animation-duration: 3s, 1s;
+            -webkit-animation-timing-function: linear, ease-in-out;
+            -webkit-animation-iteration-count: infinite, infinite;
+            -webkit-animation-play-state: running, running;
+            animation-name: peices-fall, peices-shake;
+            animation-duration: 3s, 1s;
+            animation-timing-function: linear, ease-in-out;
+            animation-iteration-count: infinite, infinite;
+            animation-play-state: running, running;
+
+            & img {
+                width: 95px;
+            }
+        }
+
+        .pieces:nth-of-type(0) {
+            left: 1%;
+            -webkit-animation-delay: 0s, 0s;
+            animation-delay: 0s, 0s;
+        }
+
+        .pieces:nth-of-type(1) {
+            left: 10%;
+            -webkit-animation-delay: 1s, 1s;
+            animation-delay: 1s, 1s;
+        }
+
+        .pieces:nth-of-type(2) {
+            left: 20%;
+            -webkit-animation-delay: 6s, .5s;
+            animation-delay: 6s, .5s;
+        }
+
+        .pieces:nth-of-type(3) {
+            left: 30%;
+            -webkit-animation-delay: 4s, 2s;
+            animation-delay: 4s, 2s;
+        }
+
+        .pieces:nth-of-type(4) {
+            left: 40%;
+            -webkit-animation-delay: 6s, 2s;
+            animation-delay: 6s, 2s;
+        }
+
+        .pieces:nth-of-type(5) {
+            left: 50%;
+            -webkit-animation-delay: 8s, 3s;
+            animation-delay: 8s, 3s;
+        }
+
+        .pieces:nth-of-type(6) {
+            left: 60%;
+            -webkit-animation-delay: 6s, 2s;
+            animation-delay: 6s, 2s;
+        }
+
+        .pieces:nth-of-type(7) {
+            left: 70%;
+            -webkit-animation-delay: 2.5s, 1s;
+            animation-delay: 2.5s, 1s;
+        }
+
+        .pieces:nth-of-type(8) {
+            left: 80%;
+            -webkit-animation-delay: 1s, 0s;
+            animation-delay: 1s, 0s;
+        }
+
+        .pieces:nth-of-type(9) {
+            left: 90%;
+            -webkit-animation-delay: 3s, 1.5s;
+            animation-delay: 3s, 1.5s;
+        }
+
+        .pieces:nth-of-type(10) {
+            left: 25%;
+            -webkit-animation-delay: 2s, 0s;
+            animation-delay: 2s, 0s;
+        }
+
+        .pieces:nth-of-type(11) {
+            left: 65%;
+            -webkit-animation-delay: 4s, 2.5s;
+            animation-delay: 4s, 2.5s;
         }
     }
 }

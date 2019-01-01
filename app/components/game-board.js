@@ -1,133 +1,218 @@
 import Component from '@ember/component';
 import EmberObject, { computed } from '@ember/object';
+import EmberArray from '@ember/array';
 
 export default Component.extend({
-    playerOne: 1,
-    playerTwo: -1,
-    playerNone: 0,
-    maxRow: 8,
-    maxCol: 8,
+    playerOne: 'hearts',
+    playerTwo: 'cards',
+    playerNone: '',
 
-    currentPlayer: computed(function(){
-        return this.playerOne ? 1 : -1;
-    }),
+    currentPlayer: null,
+    winningPlayer: null,
 
-    currentPlayerName: computed('playerOne', 'playerTwo', function(){
-        return this.playerOne ? 'hearts' : 'cards';
-    }),
+    playerOneScore: 0,
+    playerTwoScore: 0,
 
-    utils: {
-        cellIdForRowAndCol: function (r, c) {
-            return "r" + r + "_c" + c;
-        },
-        rowAndColForCellId: function (cellId) {
-            var coords = cellId.split('_');
-            coords[0] = parseInt(coords[0].substr(1, coords[0].length));
-            coords[1] = parseInt(coords[1].substr(1, coords[1].length));
-            return coords;
-        }
-        // cellContentsForPlayer: function (player) {
-        //     if (player === this.playerOne) {
-        //         return '<div class="piece hearts"></div>';
-        //     } else if (player === this.playerTwo) {
-        //         return '<div class="piece cards"></div>';
-        //     }
-        //     return '';
-        // }
-    },
+    board: [],
+    gameStarted: false,
+    gameOver: false,
 
     init: function () {
-        var t_row,
-            r,
-            c,
-            cellInitialized;
-
+        //override default
         this._super(...arguments);
-        this.board = [];
 
-        //setup initial board state
-        //    - all empty, except middle 4 sqares which are alternating colors
-        //        ( i.e. [3,3] = red, [3,4] = blue, [4,3] = red, [4,4] = blue )
-        for (r = 0; r < this.maxRow; r += 1) {
-            t_row = []
-            for (c = 0; c < this.maxCol; c += 1) {
-                cellInitialized = false;
-                if (r === 3) {
-                    if (c === 3) {
-                        t_row.push(this.playerOne);
-                        cellInitialized = true;
-                    } else if (c === 4) {
-                        t_row.push(this.playerTwo);
-                        cellInitialized = true;
-                    }
-                } else if (r === 4) {
-                    if (c === 3) {
-                        t_row.push(this.playerTwo);
-                        cellInitialized = true;
-                    } else if (c === 4) {
-                        t_row.push(this.playerOne);
-                        cellInitialized = true;
-                    }
+        //draw the board
+        this.initBoard();
+    },
+
+    initBoard: function () {
+        var b = [],
+            p = '',
+            id = 0;
+
+        // setup initial board state
+        for (var r = 1; r < 9; ++r) {
+            for (var c = 1; c < 9; ++c) {
+
+                if (r === 4 && c === 4 || r === 5 && c === 5) {
+                    p = this.get('playerOne');
+                } else if (r === 4 && c === 5 || r === 5 && c === 4) {
+                    p = this.get('playerTwo');
+                } else {
+                    p = '';
                 }
-                if (!cellInitialized) {
-                    t_row.push(this.playerNone);
-                }
+
+                b.push({
+                    id: id++,
+                    row: r,
+                    column: c,
+                    player: p
+                });
             }
-            this.board.push(t_row);
         }
 
-        //setup click handlers
-        // $('.cell').on('click', this.cellClicked.bind(this));
-
-        //red goes first
-        // this.currentPlayer = this.playerOne;
-
-        this.drawBoard();
-
-        return this;
+        //set board array of spaces
+        this.set('board', b);
     },
 
-    drawBoard: function () {
-        var t_row,
-            t_col,
-            r,
-            c,
-            cellId,
+    drawBoard: function (updatedBoard) {
+        this.set('board', updatedBoard);
+        this.isGameOver();
+    },
 
-        currPlayer = this.currentPlayer;
+    isGameOver: function() {
+        var board = this.get('board');
 
-        //draw all pieces on the board
-        // for (r = 0; r < this.maxRow; r += 1) {
-        //     t_row = this.board[r];
-        //     for (c = 0; c < this.maxCol; c += 1) {
-        //         cellId = '#' + this.utils.cellIdForRowAndCol(r, c);
-        //         $(cellId).empty()
-        //             .html(this.utils.cellContentsForPlayer(this.board[r][c]));
+        function isFull(space) {
+          return space.player !== '';
+        }
+
+        if (board.every(isFull)) {
+            var winner = this.get('playerOneScore') > this.get('playerTwoScore') ? this.get('playerOne') : this.get('playerTwo');
+            this.set('gameOver', true);
+            this.set('winningPlayer', winner);
+        }
+    },
+
+    checkSpot: function (clickedSpot, obj) {
+        var rowClicked = clickedSpot.row,
+            columnClicked = clickedSpot.column,
+            clickArea = [];
+
+        //check that the clicked space can be chosen
+        for (var i = -1; i <= 1; i++) {
+            for (var j = -1; j <= 1; j++) {
+                var row = rowClicked + j,
+                    column = columnClicked + i,
+                    selector = '#' + 'r' + row + '_c' + column + ' > div',
+                    spots = {
+                        'row': row,
+                        'column': column
+                    };
+
+                // remove jquery
+                if ($(selector).hasClass(this.get('playerOne')) || $(selector).hasClass(this.get('playerTwo'))) {
+                    return true;
+                }
+            }
+        }
+
+    },
+
+    flipPieces: function (clickedSpot, player, obj) {
+        var obj = obj;
+        for (var i = 0; i < obj.length; i++) {
+            for (var j = 0; j < 9; j++) {
+                if ((clickedSpot.row === obj[i].row) && obj[i].player !== '' || (clickedSpot.column === obj[i].column && obj[i].player !== '')) {
+                    Ember.set(obj[i], 'player', player);
+                }
+            }
+        }
+        this.set('board', obj);
+
+        // var piecesToFlip = [];
+
+        // for (var y = -1; y <= 1; y++) {
+        //     for (var x = -1; x <= 1; x++) {
+        //         var rowClicked = clickedSpot.row,
+        //             columnClicked = clickedSpot.column;
+        //         while (true) {
+        //             if (y == 0 && x == 0) {
+        //                 break;
+        //             }
+        //             var row = rowClicked + y,
+        //                 column = columnClicked + x,
+        //                 spots = '#' + 'r' + row + '_c' + column + ' > div',
+        //                 p1 = this.get('playerOne'),
+        //                 p2 = this.get('playerTwo'),
+        //                 rival = player === p1 ? p2 : p1;
+
+        //             if ($(spots).hasClass(p1) || $(spots).hasClass(p2)) {
+        //                 if ($(spots).hasClass(player)) {
+        //                     if (piecesToFlip.length > 0) {
+        //                         for (var a = 0; a < piecesToFlip.length; a++) {
+        //                             $(piecesToFlip[a]).removeClass(rival);
+        //                             $(piecesToFlip[a]).addClass(player);
+
+        //                             if ($(spot).hasClass(p1)) {
+        //                                 //points here
+        //                             }
+
+        //                             if ($(spot).hasClass(p2)) {
+        //                                 //points here
+        //                             }
+        //                         }
+        //                         piecesToFlip = [];
+        //                     }
+        //                 } else if (($(spot).hasClass(p2) || $(spot).hasClass(p1)) && $(spot).hasClass(rival)) {
+        //                 coinToChange.push(cordsXY);
+
+        //                 } else {
+        //                     piecesToFlip = [];
+        //                     break;
+        //                 }
+        //             }
+        //         }
         //     }
         // }
-
-        //show current player
-        // $('#currentPlayer')
-        //     .removeClass('blue').removeClass('red')
-        //     .addClass(currPlayer)
-        //     .text(currPlayer.toUpperCase());
-        return this;
     },
 
-    doTurn: function (row, column) {
-            //Implement the correct rules
-            this.board[row][column] = this.currentPlayer;
+    updateScore: function () {
+        var obj = this.get('board'),
+            points = [];
 
-            this.set ('currentPlayer', this.currentPlayer *= -1);
-            this.drawBoard();
-        },
+        var p1Points = obj.filter(function(element) {
+            return element.player === 'hearts';
+        });
+
+        var p2Points = obj.filter(function(element) {
+            return element.player === 'cards';
+        });
+
+        this.set('playerOneScore', p1Points.length);
+        this.set('playerTwoScore', p2Points.length);
+    },
 
     actions: {
-        cellClicked: function (e) {
-            var cellId = e.currentTarget.id,
-                coords = this.utils.rowAndColForCellId(cellId);
+        startGame: function () {
+            this.set('gameStarted', true);
+            this.initBoard();
 
-            this.doTurn(coords[0], coords[1]);
+            //hearts goes first
+            this.set('currentPlayer', this.get('playerOne'));
+        },
+        resetGame: function () {
+            this.set('gameStarted', false);
+            this.initBoard();
+            this.set('playerOneScore', 0);
+            this.set('playerTwoScore', 0);
+        },
+        cellClicked: function (spot) {
+            var spotId = spot.id,
+                obj = this.get('board'),
+                clickedSpot = obj[spotId],
+                player = this.get('currentPlayer'),
+                p1 = this.get('playerOne'),
+                p2 = this.get('playerTwo');
+
+            if (clickedSpot.player === '') {
+                if (player === p1) {
+                    if (this.checkSpot(clickedSpot)) {
+                        Ember.set(clickedSpot, 'player', player);
+                        this.flipPieces(clickedSpot, player, obj);
+                        this.set('currentPlayer', p2);
+                    }
+                } else if (player === p2) {
+                    if (this.checkSpot(clickedSpot)) {
+                        Ember.set(clickedSpot, 'player', player);
+                        this.flipPieces(clickedSpot, player, obj);
+                        this.set('currentPlayer', p1);
+                    }
+                }
+            }
+
+            this.updateScore();
+            this.drawBoard(obj);
         }
     }
 });
