@@ -20,6 +20,7 @@ html {
             background-repeat: no-repeat;
             background-position-y: center;
             background-position-x: 10px;
+            z-index: 999;
 
             #popthello-logo {
                 height: 60px;
@@ -178,7 +179,7 @@ html {
                     color: #000;
                     font-size: 18px;
                     position: absolute;
-                    margin-left: 49px;
+                    margin-left: 52px;
                     line-height: 2.8;
                 }
 
@@ -212,9 +213,6 @@ html {
             text-align: left;
             margin: 0 auto;
         }
-
-        /* ABOUT */
-
 
         /* WINNING GAME ANIMATION */
 
@@ -252,7 +250,6 @@ html {
         .pieces {
             position: fixed;
             top: -10%;
-            z-index: 9999;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -272,78 +269,78 @@ html {
             & img {
                 width: 95px;
             }
-        }
 
-        .pieces:nth-of-type(0) {
-            left: 1%;
-            -webkit-animation-delay: 0s, 0s;
-            animation-delay: 0s, 0s;
-        }
+            &:nth-of-type(0) {
+                left: 1%;
+                -webkit-animation-delay: 0s, 0s;
+                animation-delay: 0s, 0s;
+            }
 
-        .pieces:nth-of-type(1) {
-            left: 10%;
-            -webkit-animation-delay: 1s, 1s;
-            animation-delay: 1s, 1s;
-        }
+            &:nth-of-type(1) {
+                left: 10%;
+                -webkit-animation-delay: 1s, 1s;
+                animation-delay: 1s, 1s;
+            }
 
-        .pieces:nth-of-type(2) {
-            left: 20%;
-            -webkit-animation-delay: 6s, .5s;
-            animation-delay: 6s, .5s;
-        }
+            &:nth-of-type(2) {
+                left: 20%;
+                -webkit-animation-delay: 6s, .5s;
+                animation-delay: 6s, .5s;
+            }
 
-        .pieces:nth-of-type(3) {
-            left: 30%;
-            -webkit-animation-delay: 4s, 2s;
-            animation-delay: 4s, 2s;
-        }
+            &:nth-of-type(3) {
+                left: 30%;
+                -webkit-animation-delay: 4s, 2s;
+                animation-delay: 4s, 2s;
+            }
 
-        .pieces:nth-of-type(4) {
-            left: 40%;
-            -webkit-animation-delay: 6s, 2s;
-            animation-delay: 6s, 2s;
-        }
+            &:nth-of-type(4) {
+                left: 40%;
+                -webkit-animation-delay: 6s, 2s;
+                animation-delay: 6s, 2s;
+            }
 
-        .pieces:nth-of-type(5) {
-            left: 50%;
-            -webkit-animation-delay: 8s, 3s;
-            animation-delay: 8s, 3s;
-        }
+            &:nth-of-type(5) {
+                left: 50%;
+                -webkit-animation-delay: 8s, 3s;
+                animation-delay: 8s, 3s;
+            }
 
-        .pieces:nth-of-type(6) {
-            left: 60%;
-            -webkit-animation-delay: 6s, 2s;
-            animation-delay: 6s, 2s;
-        }
+            &:nth-of-type(6) {
+                left: 60%;
+                -webkit-animation-delay: 6s, 2s;
+                animation-delay: 6s, 2s;
+            }
 
-        .pieces:nth-of-type(7) {
-            left: 70%;
-            -webkit-animation-delay: 2.5s, 1s;
-            animation-delay: 2.5s, 1s;
-        }
+            &:nth-of-type(7) {
+                left: 70%;
+                -webkit-animation-delay: 2.5s, 1s;
+                animation-delay: 2.5s, 1s;
+            }
 
-        .pieces:nth-of-type(8) {
-            left: 80%;
-            -webkit-animation-delay: 1s, 0s;
-            animation-delay: 1s, 0s;
-        }
+            &:nth-of-type(8) {
+                left: 80%;
+                -webkit-animation-delay: 1s, 0s;
+                animation-delay: 1s, 0s;
+            }
 
-        .pieces:nth-of-type(9) {
-            left: 90%;
-            -webkit-animation-delay: 3s, 1.5s;
-            animation-delay: 3s, 1.5s;
-        }
+            &:nth-of-type(9) {
+                left: 90%;
+                -webkit-animation-delay: 3s, 1.5s;
+                animation-delay: 3s, 1.5s;
+            }
 
-        .pieces:nth-of-type(10) {
-            left: 25%;
-            -webkit-animation-delay: 2s, 0s;
-            animation-delay: 2s, 0s;
-        }
+            &:nth-of-type(10) {
+                left: 25%;
+                -webkit-animation-delay: 2s, 0s;
+                animation-delay: 2s, 0s;
+            }
 
-        .pieces:nth-of-type(11) {
-            left: 65%;
-            -webkit-animation-delay: 4s, 2.5s;
-            animation-delay: 4s, 2.5s;
+            &:nth-of-type(11) {
+                left: 65%;
+                -webkit-animation-delay: 4s, 2.5s;
+                animation-delay: 4s, 2.5s;
+            }
         }
     }
 }

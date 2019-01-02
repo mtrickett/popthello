@@ -5,7 +5,6 @@ html body {
   /* NAVIGATION */
   /* GAME */
   /* HOW-TO */
-  /* ABOUT */
   /* WINNING GAME ANIMATION */
 }
 html body h1 {
@@ -20,6 +19,7 @@ html body nav {
   background-repeat: no-repeat;
   background-position-y: center;
   background-position-x: 10px;
+  z-index: 999;
 }
 html body nav #popthello-logo {
   height: 60px;
@@ -150,7 +150,7 @@ html body .scoreboard .player .name {
   color: #000;
   font-size: 18px;
   position: absolute;
-  margin-left: 49px;
+  margin-left: 52px;
   line-height: 2.8;
 }
 html body .scoreboard .player .score {
@@ -206,7 +206,6 @@ html body .how-to {
 html body .pieces {
   position: fixed;
   top: -10%;
-  z-index: 9999;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

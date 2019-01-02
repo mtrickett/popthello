@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import EmberObject, { computed } from '@ember/object';
+import Emberobject, { computed } from '@ember/object';
 import EmberArray from '@ember/array';
 
 export default Component.extend({
@@ -14,14 +14,15 @@ export default Component.extend({
     playerTwoScore: 0,
 
     board: [],
+
     gameStarted: false,
     gameOver: false,
 
     init: function () {
-        //override default
+        // override default
         this._super(...arguments);
 
-        //draw the board
+        // draw the board
         this.initBoard();
     },
 
@@ -39,7 +40,7 @@ export default Component.extend({
                 } else if (r === 4 && c === 5 || r === 5 && c === 4) {
                     p = this.get('playerTwo');
                 } else {
-                    p = '';
+                    p = this.get('playerNone');
                 }
 
                 b.push({
@@ -51,46 +52,44 @@ export default Component.extend({
             }
         }
 
-        //set board array of spaces
         this.set('board', b);
     },
 
     drawBoard: function (updatedBoard) {
+        // update the pieces and check if the game is over yet
         this.set('board', updatedBoard);
         this.isGameOver();
     },
 
     isGameOver: function() {
-        var board = this.get('board');
+        var board = this.get('board'),
+            empty = this.get('playerNone'),
+            winner;
 
         function isFull(space) {
-          return space.player !== '';
+            return space.player !== empty;
         }
 
+        // when theres no more spaces left its over
         if (board.every(isFull)) {
-            var winner = this.get('playerOneScore') > this.get('playerTwoScore') ? this.get('playerOne') : this.get('playerTwo');
+            winner = this.get('playerOneScore') > this.get('playerTwoScore') ? this.get('playerOne') : this.get('playerTwo');
             this.set('gameOver', true);
             this.set('winningPlayer', winner);
         }
     },
 
-    checkSpot: function (clickedSpot, obj) {
+    checkSpot: function (clickedSpot) {
         var rowClicked = clickedSpot.row,
             columnClicked = clickedSpot.column,
             clickArea = [];
 
-        //check that the clicked space can be chosen
+        // check that the clicked space can be chosen
         for (var i = -1; i <= 1; i++) {
             for (var j = -1; j <= 1; j++) {
                 var row = rowClicked + j,
                     column = columnClicked + i,
-                    selector = '#' + 'r' + row + '_c' + column + ' > div',
-                    spots = {
-                        'row': row,
-                        'column': column
-                    };
+                    selector = '#' + 'r' + row + '_c' + column + ' > div';
 
-                // remove jquery
                 if ($(selector).hasClass(this.get('playerOne')) || $(selector).hasClass(this.get('playerTwo'))) {
                     return true;
                 }
@@ -99,74 +98,35 @@ export default Component.extend({
 
     },
 
-    flipPieces: function (clickedSpot, player, obj) {
-        var obj = obj;
-        for (var i = 0; i < obj.length; i++) {
+    flipPieces: function (clickedSpot, player, board) {
+        for (var i = 0; i < board.length; i++) {
             for (var j = 0; j < 9; j++) {
-                if ((clickedSpot.row === obj[i].row) && obj[i].player !== '' || (clickedSpot.column === obj[i].column && obj[i].player !== '')) {
-                    Ember.set(obj[i], 'player', player);
+                if ((clickedSpot.row === board[i].row) && board[i].player !== '' && board[i].player !== player) {
+                    Ember.set(board[i], 'player', player);
+                } else if (clickedSpot.column === board[i].column && board[i].player !== '' && board[i].player !== player) {
+                    Ember.set(board[i], 'player', player);
                 }
             }
         }
-        this.set('board', obj);
 
-        // var piecesToFlip = [];
-
-        // for (var y = -1; y <= 1; y++) {
-        //     for (var x = -1; x <= 1; x++) {
-        //         var rowClicked = clickedSpot.row,
-        //             columnClicked = clickedSpot.column;
-        //         while (true) {
-        //             if (y == 0 && x == 0) {
-        //                 break;
-        //             }
-        //             var row = rowClicked + y,
-        //                 column = columnClicked + x,
-        //                 spots = '#' + 'r' + row + '_c' + column + ' > div',
-        //                 p1 = this.get('playerOne'),
-        //                 p2 = this.get('playerTwo'),
-        //                 rival = player === p1 ? p2 : p1;
-
-        //             if ($(spots).hasClass(p1) || $(spots).hasClass(p2)) {
-        //                 if ($(spots).hasClass(player)) {
-        //                     if (piecesToFlip.length > 0) {
-        //                         for (var a = 0; a < piecesToFlip.length; a++) {
-        //                             $(piecesToFlip[a]).removeClass(rival);
-        //                             $(piecesToFlip[a]).addClass(player);
-
-        //                             if ($(spot).hasClass(p1)) {
-        //                                 //points here
-        //                             }
-
-        //                             if ($(spot).hasClass(p2)) {
-        //                                 //points here
-        //                             }
-        //                         }
-        //                         piecesToFlip = [];
-        //                     }
-        //                 } else if (($(spot).hasClass(p2) || $(spot).hasClass(p1)) && $(spot).hasClass(rival)) {
-        //                 coinToChange.push(cordsXY);
-
-        //                 } else {
-        //                     piecesToFlip = [];
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
+        this.set('board', board);
     },
 
     updateScore: function () {
-        var obj = this.get('board'),
-            points = [];
+        var board = this.get('board'),
+            p1 = this.get('playerOne'),
+            p2 = this.get('playerTwo');
 
-        var p1Points = obj.filter(function(element) {
-            return element.player === 'hearts';
+        var p1Points,
+            p2Points;
+
+        // set the points to the number of pieces
+        p1Points = board.filter(function(element) {
+            return element.player === p1;
         });
 
-        var p2Points = obj.filter(function(element) {
-            return element.player === 'cards';
+        p2Points = board.filter(function(element) {
+            return element.player === p2;
         });
 
         this.set('playerOneScore', p1Points.length);
@@ -178,7 +138,7 @@ export default Component.extend({
             this.set('gameStarted', true);
             this.initBoard();
 
-            //hearts goes first
+            // player one goes first
             this.set('currentPlayer', this.get('playerOne'));
         },
         resetGame: function () {
@@ -186,33 +146,37 @@ export default Component.extend({
             this.initBoard();
             this.set('playerOneScore', 0);
             this.set('playerTwoScore', 0);
+            this.set('currentPlayer', null);
+            this.set('gameOver', false);
         },
         cellClicked: function (spot) {
             var spotId = spot.id,
-                obj = this.get('board'),
-                clickedSpot = obj[spotId],
+                board = this.get('board'),
+                clickedSpot = board[spotId],
                 player = this.get('currentPlayer'),
                 p1 = this.get('playerOne'),
-                p2 = this.get('playerTwo');
+                p2 = this.get('playerTwo'),
+                p0 = this.get('playerNone');
 
-            if (clickedSpot.player === '') {
+            // check which player clicked and make the moves
+            if (clickedSpot.player === p0) {
                 if (player === p1) {
                     if (this.checkSpot(clickedSpot)) {
                         Ember.set(clickedSpot, 'player', player);
-                        this.flipPieces(clickedSpot, player, obj);
+                        this.flipPieces(clickedSpot, player, board);
                         this.set('currentPlayer', p2);
                     }
                 } else if (player === p2) {
                     if (this.checkSpot(clickedSpot)) {
                         Ember.set(clickedSpot, 'player', player);
-                        this.flipPieces(clickedSpot, player, obj);
+                        this.flipPieces(clickedSpot, player, board);
                         this.set('currentPlayer', p1);
                     }
                 }
             }
 
             this.updateScore();
-            this.drawBoard(obj);
+            this.drawBoard(board);
         }
     }
 });
