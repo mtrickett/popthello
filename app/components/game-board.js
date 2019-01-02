@@ -81,16 +81,20 @@ export default Component.extend({
     checkSpot: function (clickedSpot) {
         var rowClicked = clickedSpot.row,
             columnClicked = clickedSpot.column,
-            clickArea = [];
+            clickArea = [],
+            rival;
 
-        // check that the clicked space can be chosen
+        // whos the enemy
+        rival = this.get('currentPlayer') === this.get('playerOne') ? this.get('playerTwo') : this.get('playerOne');
+
+        // check each space for availability
         for (var i = -1; i <= 1; i++) {
             for (var j = -1; j <= 1; j++) {
                 var row = rowClicked + j,
                     column = columnClicked + i,
                     selector = '#' + 'r' + row + '_c' + column + ' > div';
 
-                if ($(selector).hasClass(this.get('playerOne')) || $(selector).hasClass(this.get('playerTwo'))) {
+                if ($(selector).hasClass(rival)) {
                     return true;
                 }
             }
@@ -99,15 +103,98 @@ export default Component.extend({
     },
 
     flipPieces: function (clickedSpot, player, board) {
+        var empty = this.get('playerNone'),
+            rowPieces = [],
+            columnPieces = [],
+            diagonalPieces = [],
+            canFlip = [],
+            flips;
+
         for (var i = 0; i < board.length; i++) {
             for (var j = 0; j < 9; j++) {
-                if ((clickedSpot.row === board[i].row) && board[i].player !== '' && board[i].player !== player) {
-                    Ember.set(board[i], 'player', player);
-                } else if (clickedSpot.column === board[i].column && board[i].player !== '' && board[i].player !== player) {
-                    Ember.set(board[i], 'player', player);
+                if (board[i].player !== empty && board[i].player !== player) {
+                    // claim the pieces in the same row or column
+                    if (clickedSpot.row === board[i].row) {
+                        rowPieces.push(i);
+                    }
+
+                    if (clickedSpot.column === board[i].column) {
+                        columnPieces.push(i);
+                    }
+
+                    // claim the pieces diagonally
+                    // TODO: fix this wild monstrosity
+                    if (board[clickedSpot.id + 7] && board[clickedSpot.id + 7].player !== empty) {
+                        diagonalPieces.push(clickedSpot.id + 7);
+                        if (board[clickedSpot.id + 14] && board[clickedSpot.id + 14].player !== empty) {
+                            diagonalPieces.push(clickedSpot.id + 14);
+                            if (board[clickedSpot.id + 21] && board[clickedSpot.id + 21].player !== empty) {
+                                diagonalPieces.push(clickedSpot.id + 21);
+                                if (board[clickedSpot.id + 28].player && board[clickedSpot.id + 28].player !== empty) {
+                                    diagonalPieces.push(clickedSpot.id + 28);
+                                    if (board[clickedSpot.id + 35].player && board[clickedSpot.id + 35].player !== empty) {
+                                        diagonalPieces.push(clickedSpot.id + 35);
+                                        if (board[clickedSpot.id + 42].player && board[clickedSpot.id + 42].player !== empty) {
+                                            diagonalPieces.push(clickedSpot.id + 42);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (board[clickedSpot.id - 7] && board[clickedSpot.id - 7].player !== empty) {
+                        diagonalPieces.push(clickedSpot.id - 7);
+                        if (board[clickedSpot.id - 14] && board[clickedSpot.id - 14].player !== empty) {
+                            diagonalPieces.push(clickedSpot.id - 14);
+                            if (board[clickedSpot.id - 21] && board[clickedSpot.id - 21].player !== empty) {
+                                diagonalPieces.push(clickedSpot.id - 21);
+                                if (board[clickedSpot.id - 28] && board[clickedSpot.id - 28].player !== empty) {
+                                    diagonalPieces.push(clickedSpot.id - 28);
+                                    if (board[clickedSpot.id - 35] && board[clickedSpot.id - 35].player !== empty) {
+                                        diagonalPieces.push(clickedSpot.id - 35);
+                                        if (board[clickedSpot.id - 42] && board[clickedSpot.id - 42].player !== empty) {
+                                            diagonalPieces.push(clickedSpot.id - 42);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        // remove duplicate results
+        function duplicates (x, i, a) {
+            return a.indexOf(x) == i;
+        }
+
+        rowPieces = rowPieces.filter(duplicates);
+        columnPieces = columnPieces.filter(duplicates);
+        diagonalPieces = diagonalPieces.filter(duplicates);
+
+        // find the best flip
+        if (rowPieces.length > columnPieces.length && rowPieces.length > diagonalPieces.length) {
+            rowPieces.forEach(function(piece) {
+                canFlip.push(piece);
+            });
+        } else if (columnPieces.length > diagonalPieces.length && columnPieces.length > rowPieces.length) {
+            columnPieces.forEach(function(piece) {
+                canFlip.push(piece);
+            });
+        } else if (diagonalPieces.length > rowPieces.length && diagonalPieces.length > columnPieces.length) {
+            diagonalPieces.forEach(function(piece) {
+                canFlip.push(piece);
+            });
+        }
+
+        // console.log(rowPieces);
+        console.log(canFlip);
+
+        canFlip.forEach(function(pieces) {
+            Ember.set(board[pieces], 'player', player);
+        });
 
         this.set('board', board);
     },

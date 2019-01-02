@@ -5,7 +5,7 @@
     {{#each board as |spot|}}
             <div class="cell" id="r{{spot.row}}_c{{spot.column}}" {{action "cellClicked" spot}}>
                 {{#if gameStarted}}
-                    <div class="piece {{spot.player}}"></div>
+                    <div class="piece {{spot.player}}">{{spot.id}}</div>
                 {{/if}}
             </div>
     {{/each}}
