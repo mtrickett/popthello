@@ -18,6 +18,16 @@ export default Component.extend({
     gameStarted: false,
     gameOver: false,
 
+    confetti: computed(function () {
+        var confetti = [];
+
+        for (var c = 1; c <= 20; c++){
+            confetti.push(c);
+        }
+
+        return confetti;
+    }),
+
     init: function () {
         // override default
         this._super(...arguments);
@@ -32,12 +42,12 @@ export default Component.extend({
             id = 0;
 
         // setup initial board state
-        for (var r = 1; r < 9; ++r) {
-            for (var c = 1; c < 9; ++c) {
+        for (var r = 0; r < 8; ++r) {
+            for (var c = 0; c < 8; ++c) {
 
-                if (r === 4 && c === 4 || r === 5 && c === 5) {
+                if (r === 3 && c === 3 || r === 4 && c === 4) {
                     p = this.get('playerOne');
-                } else if (r === 4 && c === 5 || r === 5 && c === 4) {
+                } else if (r === 3 && c === 4 || r === 4 && c === 3) {
                     p = this.get('playerTwo');
                 } else {
                     p = this.get('playerNone');
@@ -72,131 +82,95 @@ export default Component.extend({
 
         // when theres no more spaces left its over
         if (board.every(isFull)) {
-            winner = this.get('playerOneScore') > this.get('playerTwoScore') ? this.get('playerOne') : this.get('playerTwo');
+            winner = this.get('playerOneScore') > this.get('playerTwoScore') ? this.get('playerOne')
+            : this.get('playerOneScore') < this.get('playerTwoScore') ? this.get('playerTwo')
+            : 'tie';
             this.set('gameOver', true);
             this.set('winningPlayer', winner);
         }
     },
 
-    checkSpot: function (clickedSpot) {
-        var rowClicked = clickedSpot.row,
-            columnClicked = clickedSpot.column,
-            clickArea = [],
-            rival;
+    // temporarily removed to allow filling board to end the game
+    // TODO: fix isGameOver logic to allow game to end when no more possible moves
 
-        // whos the enemy
-        rival = this.get('currentPlayer') === this.get('playerOne') ? this.get('playerTwo') : this.get('playerOne');
+    // checkSpot: function (clickedSpot) {
+    //     var rowClicked = clickedSpot.row,
+    //         columnClicked = clickedSpot.column,
+    //         clickArea = [],
+    //         rival;
 
-        // check each space for availability
+    //     // whos the enemy
+    //     rival = this.get('currentPlayer') === this.get('playerOne') ? this.get('playerTwo') : this.get('playerOne');
+
+    //     // check each space for availability
+    //     for (var i = -1; i <= 1; i++) {
+    //         for (var j = -1; j <= 1; j++) {
+    //             var row = rowClicked + j,
+    //                 column = columnClicked + i,
+    //                 selector = '#' + 'r' + row + '_c' + column + ' > div';
+
+    //             if ($(selector).hasClass(rival)) {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    // },
+
+    findCanFlip: function (clickedSpot, player) {
+        var spots = [];
+
+        // find all the flippable spots in each direction
         for (var i = -1; i <= 1; i++) {
             for (var j = -1; j <= 1; j++) {
-                var row = rowClicked + j,
-                    column = columnClicked + i,
-                    selector = '#' + 'r' + row + '_c' + column + ' > div';
-
-                if ($(selector).hasClass(rival)) {
-                    return true;
+                if (i !== 0 || j !== 0) {
+                    spots.push.apply(spots, this.checkFlipDirection(clickedSpot, player, i, j));
                 }
             }
         }
 
+        return spots;
+    },
+
+    checkFlipDirection: function (spot, player, row, col) {
+        var flipSpots = [],
+            board = this.get('board'),
+            empty = this.get('playerNone'),
+            checkRow = spot.row + row,
+            checkCol = spot.column + col,
+            checkSpot = checkRow * 8 + checkCol;
+
+        while ((checkRow >= 0 && checkCol >= 0 && checkRow < 8 && checkCol < 8)) {
+            if (!board[checkSpot] || board[checkSpot] === empty) break;
+
+            // add only the opposite players spots
+            if (board[checkSpot].player === player) {
+                return flipSpots;
+            }
+
+            flipSpots.push(board[checkSpot]);
+            checkRow += row;
+            checkCol += col;
+            checkSpot = checkRow * 8 + checkCol;
+        }
+
+        // no tiles can be flipped in this direction
+        return [];
     },
 
     flipPieces: function (clickedSpot, player, board) {
-        var empty = this.get('playerNone'),
-            rowPieces = [],
-            columnPieces = [],
-            diagonalPieces = [],
-            canFlip = [],
-            flips;
+        var canFlip = this.findCanFlip(clickedSpot, player),
+            empty = this.get('playerNone');
 
-        for (var i = 0; i < board.length; i++) {
-            for (var j = 0; j < 9; j++) {
-                if (board[i].player !== empty && board[i].player !== player) {
-                    // claim the pieces in the same row or column
-                    if (clickedSpot.row === board[i].row) {
-                        rowPieces.push(i);
-                    }
+        // if theres nothing to flip then get outta here
+        if (!canFlip) {
+            return;
+        }
 
-                    if (clickedSpot.column === board[i].column) {
-                        columnPieces.push(i);
-                    }
-
-                    // claim the pieces diagonally
-                    // TODO: fix this wild monstrosity
-                    if (board[clickedSpot.id + 7] && board[clickedSpot.id + 7].player !== empty) {
-                        diagonalPieces.push(clickedSpot.id + 7);
-                        if (board[clickedSpot.id + 14] && board[clickedSpot.id + 14].player !== empty) {
-                            diagonalPieces.push(clickedSpot.id + 14);
-                            if (board[clickedSpot.id + 21] && board[clickedSpot.id + 21].player !== empty) {
-                                diagonalPieces.push(clickedSpot.id + 21);
-                                if (board[clickedSpot.id + 28].player && board[clickedSpot.id + 28].player !== empty) {
-                                    diagonalPieces.push(clickedSpot.id + 28);
-                                    if (board[clickedSpot.id + 35].player && board[clickedSpot.id + 35].player !== empty) {
-                                        diagonalPieces.push(clickedSpot.id + 35);
-                                        if (board[clickedSpot.id + 42].player && board[clickedSpot.id + 42].player !== empty) {
-                                            diagonalPieces.push(clickedSpot.id + 42);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (board[clickedSpot.id - 7] && board[clickedSpot.id - 7].player !== empty) {
-                        diagonalPieces.push(clickedSpot.id - 7);
-                        if (board[clickedSpot.id - 14] && board[clickedSpot.id - 14].player !== empty) {
-                            diagonalPieces.push(clickedSpot.id - 14);
-                            if (board[clickedSpot.id - 21] && board[clickedSpot.id - 21].player !== empty) {
-                                diagonalPieces.push(clickedSpot.id - 21);
-                                if (board[clickedSpot.id - 28] && board[clickedSpot.id - 28].player !== empty) {
-                                    diagonalPieces.push(clickedSpot.id - 28);
-                                    if (board[clickedSpot.id - 35] && board[clickedSpot.id - 35].player !== empty) {
-                                        diagonalPieces.push(clickedSpot.id - 35);
-                                        if (board[clickedSpot.id - 42] && board[clickedSpot.id - 42].player !== empty) {
-                                            diagonalPieces.push(clickedSpot.id - 42);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+        canFlip.forEach(function(spot) {
+            if (spot.player !== empty) {
+                Ember.set(board[spot.id], 'player', player);
             }
-        }
-
-        // remove duplicate results
-        function duplicates (x, i, a) {
-            return a.indexOf(x) == i;
-        }
-
-        rowPieces = rowPieces.filter(duplicates);
-        columnPieces = columnPieces.filter(duplicates);
-        diagonalPieces = diagonalPieces.filter(duplicates);
-
-        // find the best flip
-        if (rowPieces.length > columnPieces.length && rowPieces.length > diagonalPieces.length) {
-            rowPieces.forEach(function(piece) {
-                canFlip.push(piece);
-            });
-        } else if (columnPieces.length > diagonalPieces.length && columnPieces.length > rowPieces.length) {
-            columnPieces.forEach(function(piece) {
-                canFlip.push(piece);
-            });
-        } else if (diagonalPieces.length > rowPieces.length && diagonalPieces.length > columnPieces.length) {
-            diagonalPieces.forEach(function(piece) {
-                canFlip.push(piece);
-            });
-        }
-
-        // console.log(rowPieces);
-        console.log(canFlip);
-
-        canFlip.forEach(function(pieces) {
-            Ember.set(board[pieces], 'player', player);
         });
-
-        this.set('board', board);
     },
 
     updateScore: function () {
@@ -248,17 +222,18 @@ export default Component.extend({
             // check which player clicked and make the moves
             if (clickedSpot.player === p0) {
                 if (player === p1) {
-                    if (this.checkSpot(clickedSpot)) {
-                        Ember.set(clickedSpot, 'player', player);
+                    // removing this check until fix isGameOver logic
+                    // if (this.checkSpot(clickedSpot)) {
                         this.flipPieces(clickedSpot, player, board);
+                        Ember.set(clickedSpot, 'player', player);
                         this.set('currentPlayer', p2);
-                    }
+                    // }
                 } else if (player === p2) {
-                    if (this.checkSpot(clickedSpot)) {
-                        Ember.set(clickedSpot, 'player', player);
+                    // if (this.checkSpot(clickedSpot)) {
                         this.flipPieces(clickedSpot, player, board);
+                        Ember.set(clickedSpot, 'player', player);
                         this.set('currentPlayer', p1);
-                    }
+                    // }
                 }
             }
 

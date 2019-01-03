@@ -5,7 +5,7 @@
     {{#each board as |spot|}}
             <div class="cell" id="r{{spot.row}}_c{{spot.column}}" {{action "cellClicked" spot}}>
                 {{#if gameStarted}}
-                    <div class="piece {{spot.player}}">{{spot.id}}</div>
+                    <div class="piece {{spot.player}}"></div>
                 {{/if}}
             </div>
     {{/each}}
@@ -25,13 +25,13 @@
 </div>
 
 {{#if gameOver}}
-    <div>
+    <div class="winner {{winningPlayer}}">
         <div class="icon {{winningPlayer}}"></div>
-        wins!
+        <div class="wins">wins!</div>
     </div>
 
-<div class="pieces">
-    <div class="icon {{winningPlayer}}"></div>
-</div>
+{{#each confetti}}
+    <div class="pieces {{winningPlayer}}"></div>
+{{/each}}
 
 {{/if}}

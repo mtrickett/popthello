@@ -5,10 +5,6 @@ html {
         margin: 0px;
         font-family: 'Lato', Arial, sans-serif;
 
-        h1 {
-            color: #c01616;
-        }
-
         /* NAVIGATION */
 
         nav {
@@ -21,6 +17,9 @@ html {
             background-position-y: center;
             background-position-x: 10px;
             z-index: 999;
+            position: fixed;
+            width: 100%;
+            top: 0;
 
             #popthello-logo {
                 height: 60px;
@@ -65,104 +64,79 @@ html {
             }
         }
 
+        /* HOW-TO */
+
         .page {
-            margin: 30px;
-        }
+            margin: 90px 30px;
 
-        /* GAME */
+            h1 {
+                text-align: center;
+                font-weight: 900;
+                color: #c01616;
+            }
 
-        .board {
-            margin: 0 auto;
-            width: 440px;
-            overflow: hidden;
+            .how-to {
+                width: 60%;
+                margin: 0 auto;
+                text-align: center;
 
-            .button {
-                &.start {
-                    cursor: pointer;
-                    position: absolute;
-                    width: 152px;
-                    top: 269px;
-                    left: 50%;
-                    margin-left: -100px;
-                    background: #c01616;
-                    padding: 10px;
-                    border-radius: 4px;
-                    color: #fff;
-                    font-weight: 700;
-                    font-size: 30px;
-                    border: 3px solid #c01616;
-                    transition: all .2s linear;
-
-                    &:hover {
+                h2 {
+                    font-size: 22px;
+                    span {
                         color: #c01616;
-                        background: #FFF;
-                        transition: all .2s linear;
+                        font-weight: 100;
                     }
                 }
             }
-
-            .cell {
-                background: #e3e3e3;
-                height: 50px;
-                width: 50px;
-                display: inline-block;
-                border-radius: 4px;
-            }
-
-            .piece {
-                border-radius: 50%;
-                height: 40px;
-                width: 40px;
-                margin: 5px;
-
-                &.hearts {
-                    background-image: url('./img/heart-piece.png');
-                    background-size: cover;
-                }
-
-                &.cards {
-                    background-image: url('./img/cards-piece.png');
-                    background-size: cover;
-                }
-            }
         }
 
-        .scoreboard {
-            width: 440px;
-            margin: 0 auto;
+        /* GAME */
+        .game {
+            overflow: hidden;
 
-            &.hearts {
-                & > .player.hearts {
-                    border: 6px solid #c01616;
-                    transition: all .2s linear;
+            .board {
+                margin: 0 auto;
+                width: 440px;
+                overflow: hidden;
+
+                .button {
+                    &.start {
+                        cursor: pointer;
+                        position: absolute;
+                        width: 152px;
+                        top: 269px;
+                        left: 50%;
+                        margin-left: -100px;
+                        background: #c01616;
+                        padding: 10px;
+                        border-radius: 4px;
+                        color: #fff;
+                        font-weight: 700;
+                        font-size: 30px;
+                        border: 3px solid #c01616;
+                        transition: all .2s linear;
+
+                        &:hover {
+                            color: #c01616;
+                            background: #FFF;
+                            transition: all .2s linear;
+                        }
+                    }
                 }
-            }
 
-            &.cards {
-                & > .player.cards {
-                    border: 6px solid #c01616;
-                    transition: all .2s linear;
+                .cell {
+                    background: #e3e3e3;
+                    height: 50px;
+                    width: 50px;
+                    display: inline-block;
+                    border-radius: 4px;
                 }
-            }
 
-            .player {
-                border-radius: 35px;
-                background: #e2e2e2;
-                height: 50px;
-                width: 194px;
-                display: inline-block;
-                text-align: center;
-                margin: 20px 3px;
-                border: 6px solid #e2e2e2;
-                transition: all .2s linear;
-
-                .icon {
+                .piece {
                     border-radius: 50%;
                     height: 40px;
                     width: 40px;
                     margin: 5px;
-                    display: inline-block;
-                    float: left;
 
                     &.hearts {
                         background-image: url('./img/heart-piece.png');
@@ -174,57 +148,143 @@ html {
                         background-size: cover;
                     }
                 }
-
-                .name {
-                    color: #000;
-                    font-size: 18px;
-                    position: absolute;
-                    margin-left: 52px;
-                    line-height: 2.8;
-                }
-
-                .score {
-                    color: #1d1d1d;
-                    font-size: 30px;
-                    font-weight: 900;
-                    float: right;
-                    padding: 7px 12px 0 0;
-                }
             }
 
-            .reset {
-                text-align: center;
-                cursor: pointer;
-                font-size: 16px;
-                font-weight: 700;
-                color: #e2e2e2;
-                transition: all .2s linear;
+            .scoreboard {
+                width: 440px;
+                margin: 0 auto;
 
-                &:hover {
-                    color: #c01616;
+                &.hearts {
+                    & > .player.hearts {
+                        border: 6px solid #c01616;
+                        transition: all .2s linear;
+                    }
+                }
+
+                &.cards {
+                    & > .player.cards {
+                        border: 6px solid #c01616;
+                        transition: all .2s linear;
+                    }
+                }
+
+                .player {
+                    border-radius: 35px;
+                    background: #e2e2e2;
+                    height: 50px;
+                    width: 194px;
+                    display: inline-block;
+                    text-align: center;
+                    margin: 20px 3px;
+                    border: 6px solid #e2e2e2;
                     transition: all .2s linear;
+
+                    .icon {
+                        border-radius: 50%;
+                        height: 40px;
+                        width: 40px;
+                        margin: 5px;
+                        display: inline-block;
+                        float: left;
+
+                        &.hearts {
+                            background-image: url('./img/heart-piece.png');
+                            background-size: cover;
+                        }
+
+                        &.cards {
+                            background-image: url('./img/cards-piece.png');
+                            background-size: cover;
+                        }
+                    }
+
+                    .name {
+                        color: #000;
+                        font-size: 18px;
+                        position: absolute;
+                        margin-left: 52px;
+                        line-height: 2.8;
+                    }
+
+                    .score {
+                        color: #1d1d1d;
+                        font-size: 30px;
+                        font-weight: 900;
+                        float: right;
+                        padding: 7px 12px 0 0;
+                    }
+                }
+
+                .reset {
+                    text-align: center;
+                    cursor: pointer;
+                    font-size: 16px;
+                    font-weight: 700;
+                    color: #e2e2e2;
+                    transition: all .2s linear;
+
+                    &:hover {
+                        color: #c01616;
+                        transition: all .2s linear;
+                    }
                 }
             }
-        }
-
-        /* HOW-TO */
-        .how-to {
-            width: 80%;
-            text-align: left;
-            margin: 0 auto;
         }
 
         /* WINNING GAME ANIMATION */
 
-        @-webkit-keyframes peices-shake {
-            0%,
-            100% {
-                -webkit-transform: translateX(0);
-                transform: translateX(0);
+        .winner {
+            position: absolute;
+            width: 188px;
+            top: 256px;
+            left: 50%;
+            margin-left: -118px;
+            padding: 10px;
+            border-radius: 50px;
+            line-height: 0;
+            5px solid #c01616;
+
+            &.hearts {
+                background: #c01616;
+                color: #fff;
             }
-            50% {
-                -webkit-transform: translateX(80px);
-                transform: translateX(80px);
+
+            &.cards,
+            &.tie {
+                background: #fff;
+                color: #c01616;
+            }
+
+            .icon {
+                border-radius: 50%;
+                height: 60px;
+                left: 10px;
+                width: 60px;
+                display: inline-block;
+
+                &.hearts {
+                    background-image: url('./img/heart-piece.png');
+                    background-size: cover;
+                }
+
+                &.cards {
+                    background-image: url('./img/cards-piece.png');
+                    background-size: cover;
+                }
+
+                &.tie {
+                    background-image: url('./img/tie-piece.png');
+                    background-size: cover;
+                }
+            }
+
+            .wins {
+                line-height: 0;
+                font-weight: 700;
+                font-size: 50px;
+                top: 40px;
+                left: 76px;
+                position: absolute;
             }
         }
 
@@ -250,96 +310,130 @@ html {
         .pieces {
             position: fixed;
             top: -10%;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
             user-select: none;
             cursor: default;
-            -webkit-animation-name: peices-fall, peices-shake;
-            -webkit-animation-duration: 3s, 1s;
-            -webkit-animation-timing-function: linear, ease-in-out;
-            -webkit-animation-iteration-count: infinite, infinite;
-            -webkit-animation-play-state: running, running;
             animation-name: peices-fall, peices-shake;
-            animation-duration: 3s, 1s;
+            animation-duration: 2s, 3s;
             animation-timing-function: linear, ease-in-out;
             animation-iteration-count: infinite, infinite;
             animation-play-state: running, running;
 
-            & img {
-                width: 95px;
+            &.hearts {
+                background-image: url('./img/heart-piece.png');
+                background-size: cover;
+            }
+
+            &.cards {
+                background-image: url('./img/cards-piece.png');
+                background-size: cover;
+            }
+
+            &.tie {
+                background-image: url('./img/tie-piece.png');
+                background-size: cover;
             }
 
             &:nth-of-type(0) {
-                left: 1%;
-                -webkit-animation-delay: 0s, 0s;
+                left: 0%;
                 animation-delay: 0s, 0s;
             }
 
             &:nth-of-type(1) {
                 left: 10%;
-                -webkit-animation-delay: 1s, 1s;
-                animation-delay: 1s, 1s;
+                animation-delay: 1s, 1.2s;
             }
 
             &:nth-of-type(2) {
                 left: 20%;
-                -webkit-animation-delay: 6s, .5s;
-                animation-delay: 6s, .5s;
+                animation-delay: 6.1s, .5s;
             }
 
             &:nth-of-type(3) {
                 left: 30%;
-                -webkit-animation-delay: 4s, 2s;
-                animation-delay: 4s, 2s;
+                animation-delay: 4.5s, 2.3s;
             }
 
             &:nth-of-type(4) {
                 left: 40%;
-                -webkit-animation-delay: 6s, 2s;
-                animation-delay: 6s, 2s;
+                animation-delay: 4s, 3s;
             }
 
             &:nth-of-type(5) {
                 left: 50%;
-                -webkit-animation-delay: 8s, 3s;
-                animation-delay: 8s, 3s;
+                animation-delay: 8.8s, 3s;
             }
 
             &:nth-of-type(6) {
                 left: 60%;
-                -webkit-animation-delay: 6s, 2s;
                 animation-delay: 6s, 2s;
             }
 
             &:nth-of-type(7) {
                 left: 70%;
-                -webkit-animation-delay: 2.5s, 1s;
                 animation-delay: 2.5s, 1s;
             }
 
             &:nth-of-type(8) {
                 left: 80%;
-                -webkit-animation-delay: 1s, 0s;
-                animation-delay: 1s, 0s;
+                animation-delay: 1s, 0.3s;
             }
 
             &:nth-of-type(9) {
                 left: 90%;
-                -webkit-animation-delay: 3s, 1.5s;
                 animation-delay: 3s, 1.5s;
             }
 
             &:nth-of-type(10) {
-                left: 25%;
-                -webkit-animation-delay: 2s, 0s;
-                animation-delay: 2s, 0s;
+                left: 5%;
+                animation-delay: 2.6s, 0s;
             }
 
             &:nth-of-type(11) {
+                left: 12%;
+                animation-delay: 10s, 2.2s;
+            }
+
+            &:nth-of-type(12) {
+                left: 24%;
+                animation-delay: 3.4s, 1s;
+            }
+
+            &:nth-of-type(13) {
+                left: 38%;
+                animation-delay: 1.1s, 2.3s;
+            }
+
+            &:nth-of-type(14) {
+                left: 43%;
+                animation-delay: 5.7s, 3s;
+            }
+
+            &:nth-of-type(15) {
+                left: 56%;
+                animation-delay: 9.6s, 1s;
+            }
+
+            &:nth-of-type(16) {
                 left: 65%;
-                -webkit-animation-delay: 4s, 2.5s;
-                animation-delay: 4s, 2.5s;
+                animation-delay: 8.1s, 4.1s;
+            }
+
+            &:nth-of-type(17) {
+                left: 71%;
+                animation-delay: 3.3s, 0s;
+            }
+
+            &:nth-of-type(18) {
+                left: 83%;
+                animation-delay: 7.4s, 0.6s;
+            }
+
+            &:nth-of-type(19) {
+                left: 92%;
+                animation-delay: 4.5s, 0.9s;
             }
         }
     }
