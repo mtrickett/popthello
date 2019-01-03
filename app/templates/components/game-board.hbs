@@ -1,0 +1,37 @@
+<div class="board">
+    {{#unless gameStarted}}
+        <div class="button start" {{action "startGame"}}>Start Game</div>
+    {{/unless}}
+    {{#each board as |spot|}}
+            <div class="cell" id="r{{spot.row}}_c{{spot.column}}" {{action "cellClicked" spot}}>
+                {{#if gameStarted}}
+                    <div class="piece {{spot.player}}"></div>
+                {{/if}}
+            </div>
+    {{/each}}
+</div>
+<div class="scoreboard {{currentPlayer}}">
+    <div class="player {{playerOne}}">
+        <div class="icon hearts"></div>
+        <div class="name">Player One</div>
+        <div class="score">{{playerOneScore}}</div>
+    </div>
+    <div class="player {{playerTwo}}">
+        <div class="icon cards"></div>
+        <div class="name">Player Two</div>
+        <div class="score">{{playerTwoScore}}</div>
+    </div>
+    <div class="reset" {{action "resetGame"}}>Reset Game</div>
+</div>
+
+{{#if gameOver}}
+    <div class="winner {{winningPlayer}}">
+        <div class="icon {{winningPlayer}}"></div>
+        <div class="wins">wins!</div>
+    </div>
+
+{{#each confetti}}
+    <div class="pieces {{winningPlayer}}"></div>
+{{/each}}
+
+{{/if}}
