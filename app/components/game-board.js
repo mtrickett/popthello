@@ -115,7 +115,7 @@ export default Component.extend({
             checkSpot = checkRow * 8 + checkCol;
 
         while ((checkRow >= 0 && checkCol >= 0 && checkRow < 8 && checkCol < 8)) {
-            if (!board[checkSpot] || board[checkSpot] === empty) break;
+            if (!board[checkSpot] || board[checkSpot].player === empty) break;
 
             // add only the opposite players spots
             if (board[checkSpot].player === player) {
