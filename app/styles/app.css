@@ -1,0 +1,372 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900");
+html body {
+  margin: 0px;
+  font-family: "Lato", Arial, sans-serif;
+  /* NAVIGATION */
+  /* HOW-TO */
+  /* GAME */
+  /* WINNING GAME ANIMATION */
+}
+html body nav {
+  background: #c01616;
+  height: 60px;
+  box-shadow: 0px 0px 8px 2px #b5b5b5;
+  background-image: url("./img/popthello.png");
+  background-size: 170px;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: 10px;
+  z-index: 999;
+  position: fixed;
+  width: 100%;
+  top: 0;
+}
+html body nav #popthello-logo {
+  height: 60px;
+  width: 200px;
+  display: inline-block;
+}
+html body nav .links {
+  float: right;
+  margin: 20px;
+  font-size: 16px;
+  font-weight: 700;
+}
+html body nav .links .menu-item {
+  text-decoration: none;
+  color: #fff;
+  padding: 10px;
+  transition: all 0.2s linear;
+}
+html body nav .links .menu-item:hover {
+  color: #e2e2e2;
+  transition: all 0.2s linear;
+}
+html body nav .links .menu-item.play-now {
+  color: #c01616;
+  background: #fff;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border-radius: 4px;
+  border: 1px solid #FFF;
+  transition: all 0.2s linear;
+}
+html body nav .links .menu-item.play-now:hover {
+  color: #fff;
+  background: #c01616;
+  cursor: pointer;
+  transition: all 0.2s linear;
+}
+html body .page {
+  margin: 90px 30px;
+}
+html body .page h1 {
+  text-align: center;
+  font-weight: 900;
+  color: #c01616;
+  font-size: 40px;
+}
+html body .page .how-to {
+  width: 80%;
+  max-width: 650px;
+  margin: 0 auto;
+  text-align: center;
+}
+html body .page .how-to h2 {
+  font-size: 22px;
+}
+html body .page .how-to h2 span {
+  color: #c01616;
+  font-weight: 100;
+}
+html body .page .how-to .border {
+  border-bottom: 3px solid #c01616;
+  margin: 40px auto;
+  width: 50%;
+}
+html body .game {
+  overflow: hidden;
+}
+html body .game .board {
+  margin: 0 auto;
+  width: 440px;
+  overflow: hidden;
+  cursor: pointer;
+}
+html body .game .board .button.start {
+  cursor: pointer;
+  position: absolute;
+  width: 152px;
+  top: 269px;
+  left: 50%;
+  margin-left: -100px;
+  background: #c01616;
+  padding: 10px;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 30px;
+  border: 3px solid #c01616;
+  transition: all 0.2s linear;
+}
+html body .game .board .button.start:hover {
+  color: #c01616;
+  background: #FFF;
+  transition: all 0.2s linear;
+}
+html body .game .board .cell {
+  background: #e3e3e3;
+  height: 50px;
+  width: 50px;
+  display: inline-block;
+  border-radius: 4px;
+}
+html body .game .board .piece {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+}
+html body .game .board .piece.hearts {
+  background-image: url("./img/heart-piece.png");
+  background-size: cover;
+}
+html body .game .board .piece.cards {
+  background-image: url("./img/cards-piece.png");
+  background-size: cover;
+}
+html body .game .scoreboard {
+  width: 440px;
+  margin: 0 auto;
+}
+html body .game .scoreboard.hearts > .player.hearts {
+  border: 6px solid #c01616;
+  transition: all 0.2s linear;
+}
+html body .game .scoreboard.cards > .player.cards {
+  border: 6px solid #c01616;
+  transition: all 0.2s linear;
+}
+html body .game .scoreboard .player {
+  border-radius: 35px;
+  background: #e2e2e2;
+  height: 50px;
+  width: 194px;
+  display: inline-block;
+  text-align: center;
+  margin: 20px 3px;
+  border: 6px solid #e2e2e2;
+  transition: all 0.2s linear;
+}
+html body .game .scoreboard .player .icon {
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+  margin: 5px;
+  display: inline-block;
+  float: left;
+}
+html body .game .scoreboard .player .icon.hearts {
+  background-image: url("./img/heart-piece.png");
+  background-size: cover;
+}
+html body .game .scoreboard .player .icon.cards {
+  background-image: url("./img/cards-piece.png");
+  background-size: cover;
+}
+html body .game .scoreboard .player .name {
+  color: #000;
+  font-size: 18px;
+  position: absolute;
+  margin-left: 52px;
+  line-height: 2.8;
+}
+html body .game .scoreboard .player .score {
+  color: #1d1d1d;
+  font-size: 30px;
+  font-weight: 900;
+  float: right;
+  padding: 7px 12px 0 0;
+}
+html body .game .scoreboard .reset {
+  text-align: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  color: #e2e2e2;
+  transition: all 0.2s linear;
+}
+html body .game .scoreboard .reset:hover {
+  color: #c01616;
+  transition: all 0.2s linear;
+}
+html body .winner {
+  position: absolute;
+  width: 188px;
+  top: 256px;
+  left: 50%;
+  margin-left: -118px;
+  padding: 10px;
+  border-radius: 50px;
+  line-height: 0;
+  border: 5px solid #c01616;
+}
+html body .winner.hearts {
+  background: #c01616;
+  color: #fff;
+}
+html body .winner.cards, html body .winner.tie {
+  background: #fff;
+  color: #c01616;
+}
+html body .winner .icon {
+  border-radius: 50%;
+  height: 60px;
+  left: 10px;
+  width: 60px;
+  display: inline-block;
+}
+html body .winner .icon.hearts {
+  background-image: url("./img/heart-piece.png");
+  background-size: cover;
+}
+html body .winner .icon.cards {
+  background-image: url("./img/cards-piece.png");
+  background-size: cover;
+}
+html body .winner .icon.tie {
+  background-image: url("./img/tie-piece.png");
+  background-size: cover;
+}
+html body .winner .wins {
+  line-height: 0;
+  font-weight: 700;
+  font-size: 50px;
+  top: 40px;
+  left: 76px;
+  position: absolute;
+}
+@keyframes peices-fall {
+  0% {
+    top: -10%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+@keyframes peices-shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+}
+html body .pieces {
+  position: fixed;
+  top: -10%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  user-select: none;
+  cursor: default;
+  animation-name: peices-fall, peices-shake;
+  animation-duration: 2s, 3s;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-play-state: running, running;
+}
+html body .pieces.hearts {
+  background-image: url("./img/heart-piece.png");
+  background-size: cover;
+}
+html body .pieces.cards {
+  background-image: url("./img/cards-piece.png");
+  background-size: cover;
+}
+html body .pieces.tie {
+  background-image: url("./img/tie-piece.png");
+  background-size: cover;
+}
+html body .pieces:nth-of-type(0) {
+  left: 0%;
+  animation-delay: 0s, 0s;
+}
+html body .pieces:nth-of-type(1) {
+  left: 10%;
+  animation-delay: 1s, 1.2s;
+}
+html body .pieces:nth-of-type(2) {
+  left: 20%;
+  animation-delay: 6.1s, 0.5s;
+}
+html body .pieces:nth-of-type(3) {
+  left: 30%;
+  animation-delay: 4.5s, 2.3s;
+}
+html body .pieces:nth-of-type(4) {
+  left: 40%;
+  animation-delay: 4s, 3s;
+}
+html body .pieces:nth-of-type(5) {
+  left: 50%;
+  animation-delay: 8.8s, 3s;
+}
+html body .pieces:nth-of-type(6) {
+  left: 60%;
+  animation-delay: 6s, 2s;
+}
+html body .pieces:nth-of-type(7) {
+  left: 70%;
+  animation-delay: 2.5s, 1s;
+}
+html body .pieces:nth-of-type(8) {
+  left: 80%;
+  animation-delay: 1s, 0.3s;
+}
+html body .pieces:nth-of-type(9) {
+  left: 90%;
+  animation-delay: 3s, 1.5s;
+}
+html body .pieces:nth-of-type(10) {
+  left: 5%;
+  animation-delay: 2.6s, 0s;
+}
+html body .pieces:nth-of-type(11) {
+  left: 12%;
+  animation-delay: 10s, 2.2s;
+}
+html body .pieces:nth-of-type(12) {
+  left: 24%;
+  animation-delay: 3.4s, 1s;
+}
+html body .pieces:nth-of-type(13) {
+  left: 38%;
+  animation-delay: 1.1s, 2.3s;
+}
+html body .pieces:nth-of-type(14) {
+  left: 43%;
+  animation-delay: 5.7s, 3s;
+}
+html body .pieces:nth-of-type(15) {
+  left: 56%;
+  animation-delay: 9.6s, 1s;
+}
+html body .pieces:nth-of-type(16) {
+  left: 65%;
+  animation-delay: 8.1s, 4.1s;
+}
+html body .pieces:nth-of-type(17) {
+  left: 71%;
+  animation-delay: 3.3s, 0s;
+}
+html body .pieces:nth-of-type(18) {
+  left: 83%;
+  animation-delay: 7.4s, 0.6s;
+}
+html body .pieces:nth-of-type(19) {
+  left: 92%;
+  animation-delay: 4.5s, 0.9s;
+}
+
+/*# sourceMappingURL=app.css.map */

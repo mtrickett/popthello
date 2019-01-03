@@ -73,10 +73,12 @@ html {
                 text-align: center;
                 font-weight: 900;
                 color: #c01616;
+                font-size: 40px;
             }
 
             .how-to {
-                width: 60%;
+                width: 80%;
+                max-width: 650px;
                 margin: 0 auto;
                 text-align: center;
 
@@ -86,6 +88,12 @@ html {
                         color: #c01616;
                         font-weight: 100;
                     }
+                }
+
+                .border {
+                    border-bottom: 3px solid #c01616;
+                    margin: 40px auto;
+                    width: 50%;
                 }
             }
         }
@@ -98,6 +106,7 @@ html {
                 margin: 0 auto;
                 width: 440px;
                 overflow: hidden;
+                cursor: pointer;
 
                 .button {
                     &.start {
@@ -242,7 +251,7 @@ html {
             padding: 10px;
             border-radius: 50px;
             line-height: 0;
-            5px solid #c01616;
+            border: 5px solid #c01616;
 
             &.hearts {
                 background: #c01616;

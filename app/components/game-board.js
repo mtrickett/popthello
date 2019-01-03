@@ -83,38 +83,12 @@ export default Component.extend({
         // when theres no more spaces left its over
         if (board.every(isFull)) {
             winner = this.get('playerOneScore') > this.get('playerTwoScore') ? this.get('playerOne')
-            : this.get('playerOneScore') < this.get('playerTwoScore') ? this.get('playerTwo')
-            : 'tie';
+                    : this.get('playerOneScore') < this.get('playerTwoScore') ? this.get('playerTwo')
+                    : 'tie';
             this.set('gameOver', true);
             this.set('winningPlayer', winner);
         }
     },
-
-    // temporarily removed to allow filling board to end the game
-    // TODO: fix isGameOver logic to allow game to end when no more possible moves
-
-    // checkSpot: function (clickedSpot) {
-    //     var rowClicked = clickedSpot.row,
-    //         columnClicked = clickedSpot.column,
-    //         clickArea = [],
-    //         rival;
-
-    //     // whos the enemy
-    //     rival = this.get('currentPlayer') === this.get('playerOne') ? this.get('playerTwo') : this.get('playerOne');
-
-    //     // check each space for availability
-    //     for (var i = -1; i <= 1; i++) {
-    //         for (var j = -1; j <= 1; j++) {
-    //             var row = rowClicked + j,
-    //                 column = columnClicked + i,
-    //                 selector = '#' + 'r' + row + '_c' + column + ' > div';
-
-    //             if ($(selector).hasClass(rival)) {
-    //                 return true;
-    //             }
-    //         }
-    //     }
-    // },
 
     findCanFlip: function (clickedSpot, player) {
         var spots = [];
@@ -222,18 +196,13 @@ export default Component.extend({
             // check which player clicked and make the moves
             if (clickedSpot.player === p0) {
                 if (player === p1) {
-                    // removing this check until fix isGameOver logic
-                    // if (this.checkSpot(clickedSpot)) {
                         this.flipPieces(clickedSpot, player, board);
                         Ember.set(clickedSpot, 'player', player);
                         this.set('currentPlayer', p2);
-                    // }
                 } else if (player === p2) {
-                    // if (this.checkSpot(clickedSpot)) {
                         this.flipPieces(clickedSpot, player, board);
                         Ember.set(clickedSpot, 'player', player);
                         this.set('currentPlayer', p1);
-                    // }
                 }
             }
 
