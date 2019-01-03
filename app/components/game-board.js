@@ -87,6 +87,7 @@ export default Component.extend({
                     : 'tie';
             this.set('gameOver', true);
             this.set('winningPlayer', winner);
+            this.set('currentPlayer', null);
         }
     },
 
