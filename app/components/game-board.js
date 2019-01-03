@@ -128,7 +128,7 @@ export default Component.extend({
             checkSpot = checkRow * 8 + checkCol;
         }
 
-        // no tiles can be flipped in this direction
+        // no spots can be flipped in this direction
         return [];
     },
 
